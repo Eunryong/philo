@@ -6,7 +6,7 @@
 /*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 17:33:46 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/02/07 19:58:53 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/02/08 02:16:33 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	init_info(t_info *info, t_share *share, char **argv)
 	if (argv[5])
 	{
 		info->eat_size = ft_atoi(argv[5]);
-		if (info->eat_size < 0)
+		if (info->eat_size < 1)
 			return (2);
 	}
 	ret = init_share(info, share);

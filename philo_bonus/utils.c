@@ -10,30 +10,26 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
-void	print_philo(t_info *info, t_philo *philo, char *str, int flag)
+void	print_philo(t_info *info, char *str)
 {
 	long	now;
 
-	pthread_mutex_lock(&info->print);
-	if (!check_finish(info))
+	if (!info->moni->die)
 	{
-		now = get_time() - philo->start;
-		printf("%ld %d %s\n", now, philo->id + 1, str);
+		now = get_time() - info->start;
+		printf("%ld %d %s\n", now, info->id + 1, str);
 	}
-	if (flag)
-		change_finish(info);
-	pthread_mutex_unlock(&info->print);
 }
 
-void	pass_time(long wait_time, t_info *info)
+void	pass_time(long wait_time, t_moni *moni)
 {
 	long	start;
 	long	now;
 
 	start = get_time();
-	while (!check_finish(info))
+	while (!moni->die)
 	{
 		now = get_time();
 		if (now - start >= wait_time)

@@ -10,50 +10,56 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
-void	free_thread(t_info *info, t_share *share, t_philo *philo)
+void	ft_philo(t_info *info, int id)
 {
-	int	i;
-
-	pthread_mutex_destroy(&info->print);
-	pthread_mutex_destroy(&info->status);
-	i = 0;
-	while (i < info->num)
-		pthread_mutex_destroy(&share->forks[i++]);
-	free(share->fork_status);
-	free(share->forks);
-	free(philo);
+	info->id = id;
+	if (pthread_create(&info->moni->thread, NULL, monitoring, &info) == -1)
+		print_error(1);
+	while (!info->moni->die)
+	{
+		if (info->eat_count == info->eat_size)
+			exit (0);
+		if (!philo_eating(info))
+			continue ;
+		print_philo(info, "is sleeping");
+		pass_time(info->time_sleep, info->moni);
+		print_philo(info, "is thinking");
+	}
+	pthread_join(&info->moni->thread, NULL);
+	exit (0);
 }
 
-int	ft_philo(t_info *info, t_share *share, t_philo *philo)
+void	fork_philo(t_info *info)
 {
 	int	i;
+	int	pid;
 
-	i = 0;
-	while (i < info->num)
+	i = -1;
+	while (++i < info->num)
 	{
-		philo[i].last_time = get_time();
-		if (pthread_create(&philo[i].thread, NULL, philo_loof, &philo[i]) == -1)
-			return (5);
-		i++;
+		pid = fork();
+		if (pid < 0)
+			print_error(1);
+		if (pid == 0)
+			ft_philo(info, i);
 	}
-	monitoring(info, philo);
-	i = 0;
-	while (i < info->num)
-		pthread_join(philo[i++].thread, NULL);
-	free_thread(info, share, philo);
+	while (pid > 0)
+		pid = wait(NULL);
+	free_thread(info);
 	return (0);
 }
 
-void	print_error(int flag)
+void	print_error(char *str, int flag)
 {
 	if (flag == 1)
 	{
 		ft_putendl_fd("invalid of number argument", 2);
-		exit (0);
+		exit (1);
 	}
-	else if (flag == 2)
+	else
+		perror(str);
 	exit (1);
 }
 
@@ -61,20 +67,11 @@ int	main(int argc, char **argv)
 {
 	int		result;
 	t_info	info;
-	t_share	share;
-	t_philo	*philo;
+	t_moni	moni;
 
 	if (argc != 5 && argc != 6)
-		return (print_error(1));
+		print_error(1);
 	memset(&info, 0, sizeof(t_info));
-	memset(&share, 0, sizeof(t_share));
-	result = init_info(&info, &share, argv);
-	if (result)
-		return (print_error(result));
-	result = init_philo(&info, &share, &philo);
-	if (result)
-		return (print_error(result));
-	result = ft_philo(&info, &share, philo);
-	if (result)
-		return (print_error(result));
+	init_info(&info, argv);
+	fork_philo(&info);
 }
