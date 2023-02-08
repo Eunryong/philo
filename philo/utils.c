@@ -6,21 +6,23 @@
 /*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 04:31:59 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/02/07 05:10:02 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/02/08 16:41:07 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	print_philo(t_info *info, t_philo *philo, char *str)
+void	print_philo(t_info *info, t_philo *philo, char *str, int flag)
 {
 	long	now;
 
 	pthread_mutex_lock(&info->print);
 	if (!check_finish(info))
 	{
-		now = get_time() - philo->start;
-		printf("%ld %d %s\n", now, philo->id + 1, str);
+		now = get_time();
+		printf("%ld %d %s\n", now - philo->start, philo->id + 1, str);
+		if (flag == 1)
+			change_finish(info);
 	}
 	pthread_mutex_unlock(&info->print);
 }

@@ -30,9 +30,9 @@ int	init_info(t_info *info, char **argv)
 	if (argv[5])
 	{
 		info->eat_size = ft_atoi(argv[5]);
-		if (info->eat_size < 0)
+		if (info->eat_size < 1)
 			return (2);
 	}
-	sem_init(&info->forks, 0, info->num);
+	info->forks = sem_open("forks", 0, info->num);
 	return (0);
 }

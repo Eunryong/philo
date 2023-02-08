@@ -6,7 +6,7 @@
 #    By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/06 19:00:57 by eunrlee           #+#    #+#              #
-#    Updated: 2023/02/07 23:28:35 by eunrlee          ###   ########.fr        #
+#    Updated: 2023/02/08 17:02:34 by eunrlee          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ OBJS = $(SRCS:.c=.o)
 B_OBJS = $(B_SRCS:.c=.o)
 
 all : $(OBJS)
-	$(CC) $(CFLAG) $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 %.o : %.c
 	$(CC) $(CFLAGS) -c $^ -o $@ 
 bonus : $(B_OBJS)

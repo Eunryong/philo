@@ -30,8 +30,8 @@ typedef struct s_info
 	int				eat_finished;
 	int				finish;
 	pthread_mutex_t	status;
-	pthread_mutex_t	finish_check;
 	pthread_mutex_t	print;
+	pthread_mutex_t	finish_check;
 }	t_info;
 
 typedef struct s_share
@@ -57,7 +57,7 @@ int		free_thread(t_info *info, t_share *share, t_philo *philo, int result);
 // utils.c
 int		ft_atoi(const char *str);
 void	ft_putendl_fd(char *s, int fd);
-void	print_philo(t_info *info, t_philo *philo, char *str);
+void	print_philo(t_info *info, t_philo *philo, char *str, int flag);
 long	get_time(void);
 void	pass_time(long wait_time, t_info *info);
 // init.c

@@ -38,11 +38,11 @@ int	init_share(t_info *info, t_share *share)
 	int	i;
 
 	i = 0;
+	if (pthread_mutex_init(&info->finish_check, NULL) == -1)
+		return (3);
 	if (pthread_mutex_init(&info->print, NULL) == -1)
 		return (3);
 	if (pthread_mutex_init(&info->status, NULL) == -1)
-		return (3);
-	if (pthread_mutex_init(&info->finish_check, NULL) == -1)
 		return (3);
 	share->fork_status = malloc(sizeof(pthread_mutex_t) * info->num);
 	if (!share->fork_status)

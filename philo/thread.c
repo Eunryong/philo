@@ -32,8 +32,7 @@ void	monitoring(t_info *info, t_philo *philo)
 			now = get_share(info, &philo[i], 1);
 			if (now >= info->time_die)
 			{
-				print_philo(info, &philo[i], "died");
-				change_finish(info);
+				print_philo(info, &philo[i], "died", 1);
 				break ;
 			}
 		}
@@ -45,12 +44,12 @@ int	philo_eat(t_info *info, t_share *share, t_philo *philo)
 	if (check_fork(info, share, philo->id))
 	{
 		pthread_mutex_lock(&(share->forks[philo->left]));
-		print_philo(info, philo, "has token a fork");
+		print_philo(info, philo, "has token a fork", 0);
 		if (info->num != 1)
 		{
 			pthread_mutex_lock(&(share->forks[philo->right]));
-			print_philo(info, philo, "has token a fork");
-			print_philo(info, philo, "is eating");
+			print_philo(info, philo, "has token a fork", 0);
+			print_philo(info, philo, "is eating", 0);
 			pthread_mutex_lock(&info->status);
 			philo->last_time = get_time();
 			philo->eat_count++;
@@ -78,21 +77,21 @@ void	*philo_loof(void *argv)
 	info = philo->info;
 	share = philo->share;
 	if (philo->id % 2)
-		usleep(1000);
+		usleep(100);
 	while (!check_finish(info))
 	{
-		if (info->eat_size == philo->eat_count)
+		if (!philo_eat(info, share, philo))
+			continue ;
+		if (info->eat_size && info->eat_size == philo->eat_count)
 		{
 			pthread_mutex_lock(&info->status);
 			info->eat_finished++;
 			pthread_mutex_unlock(&info->status);
 			break ;
 		}
-		if (!philo_eat(info, share, philo))
-			continue ;
-		print_philo(info, philo, "is sleeping");
+		print_philo(info, philo, "is sleeping", 0);
 		pass_time((long)info->time_sleep, info);
-		print_philo(info, philo, "is thinking");
+		print_philo(info, philo, "is thinking", 0);
 	}
 	return (0);
 }

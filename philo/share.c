@@ -27,9 +27,9 @@ long	get_share(t_info *info, t_philo *philo, int flag)
 
 void	change_finish(t_info *info)
 {
-	pthread_mutex_lock(&info->status);
+	pthread_mutex_lock(&info->finish_check);
 	info->finish = 1;
-	pthread_mutex_unlock(&info->status);
+	pthread_mutex_unlock(&info->finish_check);
 }
 
 int	check_fork(t_info *info, t_share *share, int id)
@@ -53,9 +53,9 @@ int	check_finish(t_info *info)
 	int	ret;
 
 	ret = 0;
-	pthread_mutex_lock(&info->status);
+	pthread_mutex_lock(&info->finish_check);
 	if (info->finish)
 		ret = 1;
-	pthread_mutex_unlock(&info->status);
+	pthread_mutex_unlock(&info->finish_check);
 	return (ret);
 }
