@@ -6,7 +6,7 @@
 /*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 18:17:01 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/02/07 18:37:39 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/02/08 19:39:15 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	*philo_loof(void *argv)
 	info = philo->info;
 	share = philo->share;
 	if (philo->id % 2)
-		usleep(100);
+		usleep(1000);
 	while (!check_finish(info))
 	{
 		if (!philo_eat(info, share, philo))
